@@ -1,5 +1,6 @@
 // import {useRouter} from 'next/router';
 import Link from 'next/link';
+import { server } from '../../../config/index';
 
 const article = ({ article }) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -32,8 +33,8 @@ const article = ({ article }) => {
 //     }
 // }
 
-export const getStaticProps = async (context) => {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.params.id}`);
+export const getStaticProps = async ({ params: { id } }) => {
+    const res = await fetch(`${server}/api/articles/${id}`);
 
     const article = await res.json();
 
@@ -46,7 +47,7 @@ export const getStaticProps = async (context) => {
 
 export const getStaticPaths = async () => {
 
-    const res = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+    const res = await fetch(`${server}/api/articles/`);
 
     const articles = await res.json();
     const ids = articles.map(article => article.id);
